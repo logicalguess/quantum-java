@@ -13,7 +13,7 @@ public class State {
         amplitudes = new Complex[size];
     }
 
-    public Complex getC(int index) {
+    public Complex get(int index) {
         return amplitudes[index];
     }
 
@@ -24,7 +24,7 @@ public class State {
     public boolean isPossible() {
         double prob = 0;
         for (int i = 0; i < size; i++) {
-            prob += prob(getC(i));
+            prob += prob(get(i));
         }
         if (Math.abs(1.0 - prob) < 0.00000001)
             return true;
@@ -35,7 +35,7 @@ public class State {
         if (!isPossible()) {
             double coeff = 0;
             for (int i = 0; i < size; i++) {
-                coeff += prob(getC(i));
+                coeff += prob(get(i));
             }
             coeff = Math.sqrt(coeff);
             for (int i = 0; i < amplitudes.length; i++) {
@@ -49,7 +49,7 @@ public class State {
     }
 
     double probState(int i) {
-        return prob(getC(i));
+        return prob(get(i));
     }
 
     double probQOne(int j) //returns probability of a single qubit being one
@@ -57,7 +57,7 @@ public class State {
         double prob = 0;
         for (int i = 0; i < size; i++) {
             if (i / ((int) Math.pow(2, j)) % 2 == 1)
-                prob += prob(getC(i));
+                prob += prob(get(i));
         }
         return prob;
     }
@@ -120,29 +120,4 @@ public class State {
         }
         return false;
     }
-
-    public static int bitsToRepresent(int i) {
-        i += 1;
-        i = (int) (Math.ceil(log2(i)));
-        return i;
-    }
-
-    private static double logB(double d, double b) {
-        return Math.log(d) / Math.log(b);
-    }
-
-    private static double log2(double d) {
-        return logB(d, 2);
-    }
-
-    public static void transposeMatrix(Complex[][] m) {
-        Complex[][] temp = new Complex[m[0].length][m.length];
-        for (int i = 0; i < m.length; i++)
-            for (int j = 0; j < m[0].length; j++)
-                temp[j][i] = m[i][j];
-        for (int i = 0; i < m.length; i++)
-            for (int j = 0; j < m[0].length; j++)
-                m[i][j] = temp[i][j];
-    }
-
 }

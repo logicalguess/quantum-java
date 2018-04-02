@@ -227,7 +227,6 @@ public class Circuit {
         }
     }
 
-
     public void resetToBeginning() {
         step = 0;
         setStartState(startState.amplitudes); //sets currentState to startState amplitudes
