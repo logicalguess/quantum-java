@@ -14,10 +14,10 @@ public class Circuit {
     private static final Logger LOG = LoggerFactory.getLogger(SuperdenseCoding.class);
 
     public final State startState;
+    public final int qubits;
     private ArrayList<Gate> gates;
     private State currentState;
     private Complex[][] currentMatrix;
-    private int qubits;
     private int step;
 
     private boolean display = true;

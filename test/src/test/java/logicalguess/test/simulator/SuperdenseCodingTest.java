@@ -15,10 +15,11 @@ public class SuperdenseCodingTest {
     @Test
     public void runCircuit() {
         int input = 125;
-        Circuit circuit = SuperdenseCoding.create(input);
-        int finalState = circuit.measureAll();
 
-        LOG.info("Decoded number: " + finalState);
-        assertEquals(input, finalState);
+        Circuit circuit = SuperdenseCoding.encode(input);
+        int result = SuperdenseCoding.decode(circuit).measureAll();
+
+        LOG.info("Decoded number: " + result);
+        assertEquals(input, result);
     }
 }

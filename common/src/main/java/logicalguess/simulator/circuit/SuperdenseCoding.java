@@ -12,7 +12,7 @@ public class SuperdenseCoding {
 
     private static final Logger LOG = LoggerFactory.getLogger(SuperdenseCoding.class);
 
-    public static Circuit create(int input) {
+    public static Circuit encode(int input) {
 
         int bits; //so number can be represented in base 2.
         int in = input;
@@ -22,13 +22,13 @@ public class SuperdenseCoding {
         circuit.turnOffDisplay();
         circuit.setStart();
 
-
         LOG.info("Encoding Number: " + input);
 
         LOG.info("Start State: |" + MatrixUtil.bin(0, circuit.startState.bits) + ">\n |\n v");
         LOG.info("Progress -- " + "0/" + (bits / 2));
-        for (int i = 0; i < bits; i += 2) //puts all bits into equal superposition
-        {
+
+        //puts all bits into equal superposition
+        for (int i = 0; i < bits; i += 2) {
             circuit.addGate(new H(new int[]{i}));
             circuit.addGate(new CNOT(new int[]{i, i + 1}));
         }
@@ -52,20 +52,19 @@ public class SuperdenseCoding {
                     circuit.addGate(new X(new int[]{i}));
                     break;
             }
-
-            circuit.addGate(new CNOT(new int[]{i, i + 1})); //takes bits out of superposition
-            circuit.addGate(new H(new int[]{i}));
-
             in = in / 4;
-            circuit.restOfSteps();
-            LOG.info("Progress -- " + (bits / 2 - i / 2) + "/" + (bits / 2));
         }
         return circuit;
     }
 
-    public static void main(String[] args) {
-        Circuit circuit = create(127);
-        int finalState = circuit.measureAll();
-        LOG.info("Decoded Number: " + finalState);
+    public static Circuit decode(Circuit circuit) {
+        int bits = circuit.qubits;
+        for (int i = bits - 2; i >= 0; i -= 2) {
+            circuit.addGate(new CNOT(new int[]{i, i + 1})); //takes bits out of superposition
+            circuit.addGate(new H(new int[]{i}));
+            circuit.restOfSteps();
+            LOG.info("Progress -- " + (bits / 2 - i / 2) + "/" + (bits / 2));
+        }
+        return circuit;
     }
 }

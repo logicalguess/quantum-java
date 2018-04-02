@@ -81,7 +81,12 @@ Example output:
 
 ## Simulator
 A local simulator is also provided. 
-SuperdenseCodingTest gives a usage sample.
+SuperdenseCodingTest gives a usage example:
+
+    Circuit circuit = SuperdenseCoding.encode(input);
+    int result = SuperdenseCoding.decode(circuit).measureAll();
+
+Output:
 
     22:29:33.292 [main] INFO  l.simulator.circuit.SuperdenseCoding - Encoding Number: 125
     22:29:33.302 [main] INFO  l.simulator.circuit.SuperdenseCoding - Start State: |00000000>
