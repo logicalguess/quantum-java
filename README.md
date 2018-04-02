@@ -2,6 +2,9 @@
 Quantum computing with Qiskit services.
 
 ## Configuration
+The configuration is in src/test/resources/reference.conf.
+A sample is provided.
+
 Switch between qx and qc by setting the ENVIRONMENT variable. The default is qx.
 
 The API token has to be provided.
