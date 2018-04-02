@@ -1,0 +1,37 @@
+{
+  "deleted": false,
+  "backend": {
+    "name": "simulator"
+  },
+  "id": "349886dcc4e895a17d67224d3eae6ec9",
+  "shots": 128,
+  "usedCredits": 0,
+  "creationDate": "2018-03-31T15:32:20.410Z",
+  "userId": "2cddbe2751b3161f6a8f33abd15b5b95",
+  "calibration": {},
+  "maxCredits": 3,
+  "qasms": [
+    {
+      "result": {
+        "date": "2018-03-31T15:32:20.655Z",
+        "data": {
+          "creg_labels": "c2[1] c1[1] c0[1]",
+          "counts": {
+            "0 1 1": 30,
+            "0 0 1": 25,
+            "0 1 0": 34,
+            "0 0 0": 39
+          },
+          "additionalData": {
+            "seed": 493470077
+          },
+          "time": 0.00280722
+        }
+      },
+      "executionId": "d317ca647905b65519aa29403fdeef7c",
+      "qasm": "include \"qelib1.inc\";qreg q[3];creg c0[1];creg c1[1];creg c2[1];h q[1];cx q[1],q[2];u3(0.785398163397448,0,0) q[0];cx q[0],q[1];h q[0];barrier q[0],q[1],q[2];measure q[0] -> c0[0];measure q[1] -> c1[0];",
+      "status": "DONE"
+    }
+  ],
+  "status": "COMPLETED"
+}
