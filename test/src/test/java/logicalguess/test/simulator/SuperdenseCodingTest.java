@@ -16,7 +16,9 @@ public class SuperdenseCodingTest {
     public void runCircuit() {
         int input = 125;
 
-        Circuit circuit = SuperdenseCoding.encode(input);
+        int bits = SuperdenseCoding.getBitsNeeded(input);
+        Circuit circuit = SuperdenseCoding.entangle(bits);
+        circuit = SuperdenseCoding.encode(input, circuit);
         int result = SuperdenseCoding.decode(circuit).measureAll();
 
         LOG.info("Decoded number: " + result);

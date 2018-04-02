@@ -12,20 +12,15 @@ public class SuperdenseCoding {
 
     private static final Logger LOG = LoggerFactory.getLogger(SuperdenseCoding.class);
 
-    public static Circuit encode(int input) {
+    public static int getBitsNeeded(int input) {
+        return 2 * (int) Math.ceil(Math.log(input + 1) / Math.log(4));
+    }
 
-        int bits; //so number can be represented in base 2.
-        int in = input;
-        bits = 2 * (int) Math.ceil(Math.log(in + 1) / Math.log(4));
+    public static Circuit entangle(int bits) {
 
         Circuit circuit = new Circuit(bits);
         circuit.turnOffDisplay();
         circuit.setStart();
-
-        LOG.info("Encoding Number: " + input);
-
-        LOG.info("Start State: |" + MatrixUtil.bin(0, circuit.startState.bits) + ">\n |\n v");
-        LOG.info("Progress -- " + "0/" + (bits / 2));
 
         //puts all bits into equal superposition
         for (int i = 0; i < bits; i += 2) {
@@ -35,6 +30,16 @@ public class SuperdenseCoding {
 
         circuit.restOfSteps();
         //break here to represent possible time break in actual implementation
+
+        return circuit;
+    }
+
+    public static Circuit encode(int in, Circuit circuit) {
+
+        LOG.info("Encoding Number: " + in);
+
+        int bits = circuit.qubits;
+        LOG.info("Start State: |" + MatrixUtil.bin(0, circuit.startState.bits) + ">\n |\n v");
 
         for (int i = bits - 2; i >= 0; i -= 2) {
             LOG.info("IN: " + in);
@@ -59,6 +64,8 @@ public class SuperdenseCoding {
 
     public static Circuit decode(Circuit circuit) {
         int bits = circuit.qubits;
+        LOG.info("Progress -- " + "0/" + (bits / 2));
+
         for (int i = bits - 2; i >= 0; i -= 2) {
             circuit.addGate(new CNOT(new int[]{i, i + 1})); //takes bits out of superposition
             circuit.addGate(new H(new int[]{i}));

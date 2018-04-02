@@ -83,9 +83,13 @@ Example output:
 A local simulator is also provided. 
 SuperdenseCodingTest gives a usage example:
 
-    Circuit circuit = SuperdenseCoding.encode(input);
+    int input = 125;
+    
+    int bits = SuperdenseCoding.getBitsNeeded(input);
+    Circuit circuit = SuperdenseCoding.entangle(bits);    
+    circuit = SuperdenseCoding.encode(input, circuit);
     int result = SuperdenseCoding.decode(circuit).measureAll();
-
+         
 Output:
 
     22:29:33.292 [main] INFO  l.simulator.circuit.SuperdenseCoding - Encoding Number: 125
