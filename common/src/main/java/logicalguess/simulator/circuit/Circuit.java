@@ -16,15 +16,15 @@ public class Circuit {
     public final State startState;
     public final int qubits;
     private ArrayList<Gate> gates;
-    private State currentState;
+    protected State currentState;
     private Complex[][] currentMatrix;
     private int step;
 
     private boolean display = true;
     private boolean displayFinal = true;
 
-    public Circuit(int size) {
-        qubits = size;
+    public Circuit(int bits) {
+        qubits = bits;
         step = 0;
         startState = new State(qubits);
         currentState = new State(qubits);
@@ -34,22 +34,23 @@ public class Circuit {
             count++;
         }
         gates = new ArrayList<>();
-        currentMatrix = MatrixUtil.identity(size);
+        currentMatrix = MatrixUtil.identity(bits);
     }
 
-    public Circuit(Complex[] starter, int size) {
-        startState = new State(size);
+    public Circuit(Complex[] starter, int bits) {
+        startState = new State(bits);
         int count = 0;
         for (Complex c : starter) {
             startState.amplitudes[count] = c;
             count++;
         }
         count = 0;
+        currentState = new State(bits);
         for (Complex c : startState.amplitudes) {
             currentState.amplitudes[count] = c;
             count++;
         }
-        qubits = size;
+        qubits = bits;
         gates = new ArrayList<>();
         currentMatrix = MatrixUtil.identity(qubits);
         step = 0;
@@ -162,8 +163,8 @@ public class Circuit {
 
     public void step() {
         Gate gate = gates.get(step);
-        if (gate.type.equals("Measure")) //measures individual qubits
-        {
+        //measures individual qubits
+        if (gate.type.equals("Measure")) {
             currentMatrix = MatrixUtil.identity(currentState.size);
             int which = ((Measure) gate).qubit;
             Complex out;

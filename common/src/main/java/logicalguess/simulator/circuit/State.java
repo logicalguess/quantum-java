@@ -2,6 +2,8 @@ package logicalguess.simulator.circuit;
 
 import org.apache.commons.math3.complex.Complex;
 
+import java.util.Arrays;
+
 public class State {
     public final int bits;
     public final int size;
