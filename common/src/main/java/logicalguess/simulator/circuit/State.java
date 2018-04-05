@@ -51,7 +51,7 @@ public class State {
     }
 
     double probState(int i) {
-        return prob(get(i));
+        return Math.round(prob(get(i)) * 1000.0) / 1000.0;
     }
 
     double probQOne(int j) //returns probability of a single qubit being one
@@ -71,7 +71,7 @@ public class State {
 
     //returns formatted string for complex number
     public static String display(Complex c) {
-        int sigFigs = 4; //can change at will
+        int sigFigs = 3; //can change at will
 
         double r = c.getReal();
         boolean rInt = isInt(r);

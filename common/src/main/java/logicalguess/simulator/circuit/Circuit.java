@@ -214,9 +214,12 @@ public class Circuit {
         }
         step++;
         if (display) {
-            LOG.info(" |\n v");
+            LOG.info("\n |\n v");
             for (int i = 0; i < currentState.amplitudes.length; i++) {
-                LOG.info("|" + MatrixUtil.bin(i, startState.bits) + ">: " + State.display((currentState.amplitudes[i])));
+                if (currentState.amplitudes[i].equals(Complex.ZERO)) continue;
+                LOG.info("|" + MatrixUtil.bin(i, currentState.bits) +
+                        ">: " + State.display((currentState.amplitudes[i])) +
+                " -> " + currentState.probState(i) + "%");
             }
         }
     }
