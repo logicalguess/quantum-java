@@ -5,6 +5,7 @@ import logicalguess.simulator.gate.H;
 import logicalguess.simulator.gate.X;
 import logicalguess.simulator.gate.Z;
 import logicalguess.util.MatrixUtil;
+import org.apache.commons.math3.complex.Complex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +22,7 @@ public class SuperdenseCoding {
         Circuit circuit = new Circuit(bits);
         circuit.turnOffDisplay();
         circuit.setStart();
+        circuit.state.set(0, Complex.ONE);
 
         //puts all bits into equal superposition
         for (int i = 0; i < bits; i += 2) {
@@ -39,7 +41,7 @@ public class SuperdenseCoding {
         LOG.info("Encoding Number: " + in);
 
         int bits = circuit.qubits;
-        LOG.info("Start State: |" + MatrixUtil.bin(0, circuit.startState.bits) + ">\n |\n v");
+        LOG.info("Start State: |" + MatrixUtil.bin(0, circuit.state.bits) + ">\n |\n v");
 
         for (int i = bits - 2; i >= 0; i -= 2) {
             LOG.info("IN: " + in);

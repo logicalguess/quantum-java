@@ -13,11 +13,10 @@ public class Circuit {
 
     private static final Logger LOG = LoggerFactory.getLogger(SuperdenseCoding.class);
 
-    public final State startState;
     public final int qubits;
+    public final State state;
     private ArrayList<Gate> gates;
-    protected State currentState;
-    private Complex[][] currentMatrix;
+    private Complex[][] matrix;
     private int step;
 
     private boolean display = true;
@@ -26,52 +25,35 @@ public class Circuit {
     public Circuit(int bits) {
         qubits = bits;
         step = 0;
-        startState = new State(qubits);
-        currentState = new State(qubits);
+        state = new State(qubits);
         int count = 0;
-        for (Complex c : startState.amplitudes) {
-            currentState.amplitudes[count] = c;
+        for (Complex c : state.amplitudes) {
+            state.amplitudes[count] = c;
             count++;
         }
         gates = new ArrayList<>();
-        currentMatrix = MatrixUtil.identity(bits);
+        matrix = MatrixUtil.identity(bits);
     }
 
     public Circuit(Complex[] starter, int bits) {
-        startState = new State(bits);
         int count = 0;
-        for (Complex c : starter) {
-            startState.amplitudes[count] = c;
-            count++;
-        }
-        count = 0;
-        currentState = new State(bits);
-        for (Complex c : startState.amplitudes) {
-            currentState.amplitudes[count] = c;
+        state = new State(bits);
+        for (Complex c : state.amplitudes) {
+            state.amplitudes[count] = c;
             count++;
         }
         qubits = bits;
         gates = new ArrayList<>();
-        currentMatrix = MatrixUtil.identity(qubits);
+        matrix = MatrixUtil.identity(qubits);
         step = 0;
+
+        printState();
     }
 
     //to set all qubits to 0
     public void setStart() {
-        for (int r = 0; r < startState.amplitudes.length; r++) {
-            if (r == 0) {
-                startState.amplitudes[r] = Complex.ONE;
-                currentState.amplitudes[r] = Complex.ONE;
-            } else {
-                startState.amplitudes[r] = Complex.ZERO;
-                currentState.amplitudes[r] = Complex.ZERO;
-            }
-        }
-
-        if (display) {
-            for (int i = 0; i < startState.amplitudes.length; i++) {
-                LOG.info("|" + MatrixUtil.bin(i, startState.bits) + ">: " + State.display((startState.amplitudes[i])));
-            }
+        for (int r = 0; r < state.amplitudes.length; r++) {
+            state.amplitudes[r] = Complex.ZERO;
         }
     }
 
@@ -86,20 +68,20 @@ public class Circuit {
         }
         //this.restOfSteps();
 
-        for (int i = 0; i < currentState.amplitudes.length; i++) {
-            if (!currentState.amplitudes[i].equals(Complex.ZERO)) {
-                currentState.amplitudes[i] = Complex.ONE;
+        for (int i = 0; i < state.amplitudes.length; i++) {
+            if (!state.amplitudes[i].equals(Complex.ZERO)) {
+                state.amplitudes[i] = Complex.ONE;
             }
         }
 
         if (displayFinal) {
             LOG.info("\n |\n v");
         }
-        for (int i = 0; i < currentState.amplitudes.length; i++) {
-            if (currentState.amplitudes[i].equals(Complex.ONE)) {
+        for (int i = 0; i < state.amplitudes.length; i++) {
+            if (state.amplitudes[i].equals(Complex.ONE)) {
                 finalState = i;
                 if (displayFinal) {
-                    LOG.info("Final State: |" + MatrixUtil.bin(i, startState.bits) + ">");
+                    LOG.info("Final State: |" + MatrixUtil.bin(i, state.bits) + ">");
                 }
             }
         }
@@ -109,32 +91,30 @@ public class Circuit {
     public void setStartState(Complex[] starter) {
         if (starter == null) //same as no parameter
         {
-            for (int r = 0; r < startState.amplitudes.length; r++) {
-                if (r == 0) {
-                    startState.amplitudes[r] = Complex.ONE;
-                    currentState.amplitudes[r] = Complex.ONE;
-                } else {
-                    startState.amplitudes[r] = Complex.ZERO;
-                    currentState.amplitudes[r] = Complex.ZERO;
-                }
+            for (int r = 0; r < state.amplitudes.length; r++) {
+                state.amplitudes[r] = Complex.ZERO;
             }
         } else {
             int count = 0;
-            for (Complex c : starter) {
-                startState.amplitudes[count] = c;
-                count++;
-            }
-            count = 0;
-            for (Complex c : startState.amplitudes) {
-                currentState.amplitudes[count] = c;
+            for (Complex c : state.amplitudes) {
+                state.amplitudes[count] = c;
                 count++;
             }
         }
+        printState();
+    }
+
+    public void printState() {
         if (display) {
-            for (int i = 0; i < startState.amplitudes.length; i++) {
-                LOG.info("|" + MatrixUtil.bin(i, startState.bits) + ">: " + State.display((startState.amplitudes[i])));
+            for (int i = 0; i < state.amplitudes.length; i++) {
+                LOG.info("|" + MatrixUtil.bin(i, state.bits) + ">: " + State.display((state.amplitudes[i])));
             }
         }
+    }
+
+    public void set(int index, Complex value) {
+        state.set(index, value);
+        printState();
     }
 
     public void turnOffDisplay() {
@@ -165,10 +145,10 @@ public class Circuit {
         Gate gate = gates.get(step);
         //measures individual qubits
         if (gate.type.equals("Measure")) {
-            currentMatrix = MatrixUtil.identity(currentState.size);
+            matrix = MatrixUtil.identity(state.size);
             int which = ((Measure) gate).qubit;
             Complex out;
-            if (Math.random() < currentState.probQOne(which)) {
+            if (Math.random() < state.probQOne(which)) {
                 out = Complex.ONE;
             } else {
                 out = Complex.ZERO;
@@ -181,45 +161,45 @@ public class Circuit {
             } else {
                 bit = 'u';
             }
-            Complex[] change = new Complex[currentState.size];
+            Complex[] change = new Complex[state.size];
             double div = 0;
-            for (int i = 0; i < currentState.size; i++) {
-                String temp = MatrixUtil.bin(i, currentState.bits);
-                if (temp.charAt(currentState.bits - 1 - which) != bit) {
+            for (int i = 0; i < state.size; i++) {
+                String temp = MatrixUtil.bin(i, state.bits);
+                if (temp.charAt(state.bits - 1 - which) != bit) {
                     change[i] = Complex.ZERO;
-                } else if (temp.charAt(currentState.bits - 1 - which) == bit) {
-                    div += Math.pow(currentState.amplitudes[i].abs(), 2);
+                } else if (temp.charAt(state.bits - 1 - which) == bit) {
+                    div += Math.pow(state.amplitudes[i].abs(), 2);
                 }
 
             }
-            for (int i = 0; i < currentState.size; i++) {
-                String temp = MatrixUtil.bin(i, currentState.bits);
-                if (temp.charAt(currentState.bits - 1 - which) != bit) {
+            for (int i = 0; i < state.size; i++) {
+                String temp = MatrixUtil.bin(i, state.bits);
+                if (temp.charAt(state.bits - 1 - which) != bit) {
                     change[i] = Complex.ZERO;
-                } else if (temp.charAt(currentState.bits - 1 - which) == bit) {
-                    Complex a = currentState.amplitudes[i];
+                } else if (temp.charAt(state.bits - 1 - which) == bit) {
+                    Complex a = state.amplitudes[i];
                     change[i] = a.divide(Math.sqrt(div));
                 }
             }
 
             for (int i = 0; i < change.length; i++) {
-                currentState.amplitudes[i] = change[i];
+                state.amplitudes[i] = change[i];
             }
         } else {
-            currentMatrix = MatrixUtil.convert(gate.matrix, gate.inputs, qubits);
-            Complex[][] change = MatrixUtil.multiply(currentMatrix, MatrixUtil.colToMatrix(currentState.amplitudes));
+            matrix = MatrixUtil.convert(gate.matrix, gate.inputs, qubits);
+            Complex[][] change = MatrixUtil.multiply(matrix, MatrixUtil.colToMatrix(state.amplitudes));
             for (int i = 0; i < change.length; i++) {
-                currentState.amplitudes[i] = change[i][0];
+                state.amplitudes[i] = change[i][0];
             }
         }
         step++;
         if (display) {
             LOG.info("\n |\n v");
-            for (int i = 0; i < currentState.amplitudes.length; i++) {
-                if (currentState.amplitudes[i].equals(Complex.ZERO)) continue;
-                LOG.info("|" + MatrixUtil.bin(i, currentState.bits) +
-                        ">: " + State.display((currentState.amplitudes[i])) +
-                " -> " + currentState.probState(i) + "%");
+            for (int i = 0; i < state.amplitudes.length; i++) {
+                if (state.amplitudes[i].equals(Complex.ZERO)) continue;
+                LOG.info("|" + MatrixUtil.bin(i, state.bits) +
+                        ">: " + State.display((state.amplitudes[i])) +
+                " -> " + state.probState(i) + "%");
             }
         }
     }
@@ -229,10 +209,5 @@ public class Circuit {
         for (int i = step; i < gates.size(); i++) {
             step();
         }
-    }
-
-    public void resetToBeginning() {
-        step = 0;
-        setStartState(startState.amplitudes); //sets currentState to startState amplitudes
     }
 }
