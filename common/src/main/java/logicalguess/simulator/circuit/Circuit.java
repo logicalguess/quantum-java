@@ -51,10 +51,18 @@ public class Circuit {
     }
 
     //to set all qubits to 0
-    public void setStart() {
+    public void setEmpty() {
         for (int r = 0; r < state.amplitudes.length; r++) {
             state.amplitudes[r] = Complex.ZERO;
         }
+    }
+
+    public void setStart() {
+        state.amplitudes[0] = Complex.ONE;
+        for (int r = 1; r < state.amplitudes.length; r++) {
+            state.amplitudes[r] = Complex.ZERO;
+        }
+        printState();
     }
 
     public void measure(int i) {
@@ -107,6 +115,7 @@ public class Circuit {
     public void printState() {
         if (display) {
             for (int i = 0; i < state.amplitudes.length; i++) {
+                if (state.amplitudes[i].equals(Complex.ZERO)) continue;
                 LOG.info("|" + MatrixUtil.bin(i, state.bits) + ">: " + State.display((state.amplitudes[i])));
             }
         }

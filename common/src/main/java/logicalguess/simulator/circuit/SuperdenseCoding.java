@@ -22,7 +22,6 @@ public class SuperdenseCoding {
         Circuit circuit = new Circuit(bits);
         circuit.turnOffDisplay();
         circuit.setStart();
-        circuit.state.set(0, Complex.ONE);
 
         //puts all bits into equal superposition
         for (int i = 0; i < bits; i += 2) {
