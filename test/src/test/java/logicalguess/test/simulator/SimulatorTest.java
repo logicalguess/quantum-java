@@ -17,6 +17,15 @@ public class SimulatorTest {
     private static final Logger LOG = LoggerFactory.getLogger(SimulatorTest.class);
 
     @Test
+    public void test1Hadamard() {
+        Circuit c = new Circuit(4);
+        c.setStart();
+
+        c.addGate(new H(new int[]{0}));
+        c.restOfSteps();
+    }
+
+    @Test
     public void testHadamard() {
         Circuit c = new Circuit(4);
         c.setStart();

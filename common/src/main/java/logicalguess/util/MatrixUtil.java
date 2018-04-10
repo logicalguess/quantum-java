@@ -32,7 +32,7 @@ public class MatrixUtil {
         return temp;
     }
 
-    public static Complex[][] convert(Complex[][] matrix, int[] inputs, int s) {
+    public static Complex[][] expand(Complex[][] matrix, int[] inputs, int s) {
         Complex[][] m = new Complex[(int) Math.pow(2, s)][(int) Math.pow(2, s)];
         for (int r = 0; r < m.length; r++) {
             for (int c = 0; c < m.length; c++) {

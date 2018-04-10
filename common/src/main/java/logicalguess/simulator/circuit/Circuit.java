@@ -195,13 +195,14 @@ public class Circuit {
                 state.amplitudes[i] = change[i];
             }
         } else {
-            matrix = MatrixUtil.convert(gate.matrix, gate.inputs, qubits);
+            matrix = MatrixUtil.expand(gate.matrix, gate.inputs, qubits);
             Complex[][] change = MatrixUtil.multiply(matrix, MatrixUtil.colToMatrix(state.amplitudes));
             for (int i = 0; i < change.length; i++) {
                 state.amplitudes[i] = change[i][0];
             }
         }
         step++;
+
         if (display) {
             LOG.info("\n |\n v");
             for (int i = 0; i < state.amplitudes.length; i++) {

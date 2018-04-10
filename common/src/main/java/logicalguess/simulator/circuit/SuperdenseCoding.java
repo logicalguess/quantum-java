@@ -5,7 +5,6 @@ import logicalguess.simulator.gate.H;
 import logicalguess.simulator.gate.X;
 import logicalguess.simulator.gate.Z;
 import logicalguess.util.MatrixUtil;
-import org.apache.commons.math3.complex.Complex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
