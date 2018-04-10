@@ -1,11 +1,9 @@
 package logicalguess.test.simulator;
 
 import logicalguess.simulator.circuit.Circuit;
-import logicalguess.simulator.circuit.SuperdenseCoding;
 import logicalguess.simulator.gate.CNOT;
 import logicalguess.simulator.gate.H;
 import logicalguess.simulator.gate.X;
-import org.apache.commons.math3.complex.Complex;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

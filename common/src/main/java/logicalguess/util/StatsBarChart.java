@@ -43,7 +43,6 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.chart.ui.ApplicationFrame;
-import org.jfree.chart.ui.UIUtils;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
@@ -55,7 +54,7 @@ public class StatsBarChart extends ApplicationFrame {
 
     private static final long serialVersionUID = 1L;
 
-    public static enum Type {
+    public enum Type {
         COUNTS("Counts"),
         PROBS("Probabilities");
 
