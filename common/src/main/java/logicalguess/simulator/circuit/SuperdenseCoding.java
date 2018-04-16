@@ -53,8 +53,8 @@ public class SuperdenseCoding {
                     circuit.addGate(new Z(new int[]{i}));
                     break;
                 case 3:
-                    circuit.addGate(new Z(new int[]{i}));
                     circuit.addGate(new X(new int[]{i}));
+                    circuit.addGate(new Z(new int[]{i}));
                     break;
             }
             in = in / 4;
