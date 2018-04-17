@@ -52,12 +52,13 @@ public class State {
         return Math.round(prob(get(i)) * 1000.0) / 1000.0;
     }
 
-    double probQOne(int j) //returns probability of a single qubit being one
-    {
+    //returns probability of a single qubit being one
+    public double probQOne(int j)  {
         double prob = 0;
         for (int i = 0; i < size; i++) {
-            if (i / ((int) Math.pow(2, j)) % 2 == 1)
+            if (i / ((int) Math.pow(2, j)) % 2 == 1) {
                 prob += prob(get(i));
+            }
         }
         return prob;
     }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Circuit {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SuperdenseCoding.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Circuit.class);
 
     public final int qubits;
     public final State state;
@@ -123,6 +123,7 @@ public class Circuit {
 
     public void set(int index, Complex value) {
         state.set(index, value);
+        state.normalize();
         printState();
     }
 
