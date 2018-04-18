@@ -3,33 +3,37 @@
   "backend": {
     "name": "simulator"
   },
-  "id": "349886dcc4e895a17d67224d3eae6ec9",
-  "shots": 128,
+  "id": "28694595a0ad48dde4605dd41f8bda4c",
+  "shots": 1024,
   "usedCredits": 0,
-  "creationDate": "2018-03-31T15:32:20.410Z",
+  "creationDate": "2018-04-18T23:28:13.234Z",
   "userId": "2cddbe2751b3161f6a8f33abd15b5b95",
   "calibration": {},
   "maxCredits": 3,
   "qasms": [
     {
       "result": {
-        "date": "2018-03-31T15:32:20.655Z",
+        "date": "2018-04-18T23:28:13.527Z",
         "data": {
           "creg_labels": "c2[1] c1[1] c0[1]",
           "counts": {
-            "0 1 1": 30,
-            "0 0 1": 25,
-            "0 1 0": 34,
-            "0 0 0": 39
+            "1 0 0": 32,
+            "0 1 1": 225,
+            "0 1 0": 206,
+            "0 0 1": 217,
+            "1 1 1": 35,
+            "1 0 1": 45,
+            "1 1 0": 28,
+            "0 0 0": 236
           },
           "additionalData": {
-            "seed": 493470077
+            "seed": 624845017
           },
-          "time": 0.00280722
+          "time": 0.0252702
         }
       },
-      "executionId": "d317ca647905b65519aa29403fdeef7c",
-      "qasm": "include \"qelib1.inc\";qreg q[3];creg c0[1];creg c1[1];creg c2[1];h q[1];cx q[1],q[2];u3(0.785398163397448,0,0) q[0];cx q[0],q[1];h q[0];barrier q[0],q[1],q[2];measure q[0] -> c0[0];measure q[1] -> c1[0];",
+      "executionId": "fe42294980144acb30a20f720767691b",
+      "qasm": "include \"qelib1.inc\";qreg q[3];creg c0[1];creg c1[1];creg c2[1];h q[1];cx q[1],q[2];u3(0.785398163397448,0,0) q[0];cx q[0],q[1];h q[0];barrier q[0],q[1],q[2];measure q[0] -> c0[0];measure q[1] -> c1[0];if(c0==1) z q[2];if(c1==1) x q[2];measure q[2] -> c2[0];",
       "status": "DONE"
     }
   ],

@@ -12,3 +12,6 @@ h q[0];
 barrier q[0],q[1],q[2];
 measure q[0] -> c0[0];
 measure q[1] -> c1[0];
+if(c0==1) z q[2];
+if(c1==1) x q[2];
+measure q[2] -> c2[0];
