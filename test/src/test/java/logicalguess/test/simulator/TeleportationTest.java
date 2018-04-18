@@ -22,7 +22,7 @@ public class TeleportationTest {
         circuit.addGate(new H(new int[]{1}));
         circuit.addGate(new CNOT(new int[]{1, 2}));
 
-        // prepare state
+        // prepare state to be teleported
         //circuit.addGate(new X(new int[]{0}));
 
 
@@ -44,7 +44,7 @@ public class TeleportationTest {
         // decode
         if (c0 == 1) circuit.addGate(new Z(new int[]{2}));
         if (c1 == 1) circuit.addGate(new X(new int[]{2}));
-        
+
         LOG.info("probability of qubit 2 being 1: " + circuit.state.probQOne(2));
 
         circuit.measure(2);
